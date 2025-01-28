@@ -160,6 +160,67 @@ class Tree {
 
       helper([this.root])
     }
+
+    inOrder(callback) {
+
+      if (typeof callback !== 'function') {
+        throw new Error ('A callback function is required');
+      }
+
+      if (this.root === null) return;
+
+      const traverse = (currentNode) => {
+
+        if (currentNode === null) return null;
+
+        traverse(currentNode.left);
+        callback(currentNode);
+        traverse(currentNode.right);
+      }
+
+      traverse(this.root);
+    }
+
+    preOrder(callback) {
+
+      if (typeof callback !== 'function') {
+        throw new Error ('A callback function is required');
+      }
+
+      if (this.root === null) return;
+
+      const traverse = (currentNode) => {
+
+        if (currentNode === null) return null;
+
+        callback(currentNode);
+        traverse(currentNode.left);
+        traverse(currentNode.right);
+
+      }
+
+      traverse(this.root);
+    }
+
+    postOrder(callback) {
+
+      if (typeof callback !== 'function') {
+        throw new Error ('A callback function is required');
+      }
+
+      if (this.root === null) return;
+
+      const traverse = (currentNode) => {
+
+        if (currentNode === null) return null;
+
+        traverse(currentNode.left);
+        traverse(currentNode.right);
+        callback(currentNode);
+      }
+
+      traverse(this.root);
+    }
       
 }
 
@@ -187,4 +248,4 @@ prettyPrint(test.root)
 test.deleteItem(51)
 prettyPrint(test.root)
 console.log(test.find(51));
-test.levelOrder(printNode)
+test.inOrder(printNode)
