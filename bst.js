@@ -114,6 +114,52 @@ class Tree {
 
       return searchNode(this.root,value);
     }
+
+    // levelOrder(callback){ - this is iterative approach
+
+    //   if (typeof callback !== 'function'){
+    //     throw new Error('A callback function is required')
+    //   }
+
+    //   if (this.root === null) return;
+
+    //   const queue = [this.root];
+
+    //   while (queue.length > 0){
+        
+    //     const currentNode = queue.shift();
+
+    //     callback(currentNode);
+
+    //     if (currentNode.left !== null) queue.push(currentNode.left);
+    //     if (currentNode.right !== null) queue.push(currentNode.right)
+    //   }
+    // }
+
+    levelOrder(callback){
+
+      if (typeof callback !== 'function'){
+        throw new Error ('A callback function is required')
+      }
+      
+      if (this.root === null) return;
+
+      const helper = (queue) => {
+
+        if (queue.length === 0) return;
+
+        const currentNode = queue.shift();
+
+        callback(currentNode);
+
+        if (currentNode.left !== null) queue.push(currentNode.left);
+        if (currentNode.right !== null) queue.push(currentNode.right);
+
+        helper(queue);
+      }
+
+      helper([this.root])
+    }
       
 }
 
@@ -130,7 +176,9 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-
+const printNode = (node) =>{
+  console.log(node.data)
+}
 
 let test = new Tree([1,8,9,6,21,5,7,76,3,51,64]);
 prettyPrint(test.root)
@@ -139,3 +187,4 @@ prettyPrint(test.root)
 test.deleteItem(51)
 prettyPrint(test.root)
 console.log(test.find(51));
+test.levelOrder(printNode)
