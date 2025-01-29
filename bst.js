@@ -221,7 +221,47 @@ class Tree {
 
       traverse(this.root);
     }
+
+    height(node){
+
+      if (node === null) return -1;
+
+      const leftHeight = this.height(node.left);
+      const rightHeight = this.height(node.right);
+
+      return 1 + Math.max(leftHeight,rightHeight)
+    }
+
+    depth(node, currentNode = this.root, currentDepth = 0){
+
+      if (node === null) return `Node doesn't exist`;
+
+      if (node === currentNode) return currentDepth;
+
+      if (node.data < currentNode.data){
+        return this.depth(node, currentNode.left, currentDepth + 1);
+      } else return this.depth(node, currentNode.right, currentDepth + 1)
+    }
+
+    isBalanced(){
+
+      const checkNode = (node) => {
       
+      if (node === null) return true;
+
+      const leftHeight = this.height(node.left);
+      const rightHeight = this.height(node.right);
+      const diff = Math.abs(leftHeight - rightHeight);
+
+      if (diff >= 2){
+          return false;
+        } else return checkNode(node.left) && checkNode (node.right);
+
+      }
+
+      return checkNode(this.root)
+    } 
+    
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -249,3 +289,6 @@ test.deleteItem(51)
 prettyPrint(test.root)
 console.log(test.find(51));
 test.inOrder(printNode)
+console.log(test.depth(test.find(70)))
+console.log(test.height(test.find(8)))
+console.log(test.isBalanced())
