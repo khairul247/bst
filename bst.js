@@ -261,6 +261,24 @@ class Tree {
 
       return checkNode(this.root)
     } 
+
+    rebalance(){
+
+      const inOrderTraversal = (node, result = []) => {
+
+        if (node === null) return result;
+
+        inOrderTraversal(node.left, result);
+        result.push(node.data);
+        inOrderTraversal(node.right, result);
+
+        return result;
+      }
+
+      const sortedResult = inOrderTraversal(this.root);
+
+      this.root = this.buildTree(sortedResult);
+    }
     
 }
 
@@ -281,14 +299,55 @@ const printNode = (node) =>{
   console.log(node.data)
 }
 
-let test = new Tree([1,8,9,6,21,5,7,76,3,51,64]);
-prettyPrint(test.root)
-test.insert(2)
-prettyPrint(test.root)
-test.deleteItem(51)
-prettyPrint(test.root)
-console.log(test.find(51));
-test.inOrder(printNode)
-console.log(test.depth(test.find(70)))
-console.log(test.height(test.find(8)))
-console.log(test.isBalanced())
+
+const generateRandomArray = (size) => {
+  return Array.from({ length: size }, () => Math.floor(Math.random() * 100));
+};
+
+const tree = new Tree(generateRandomArray(10));
+prettyPrint(tree.root)
+// Confirm the tree is balanced
+console.log("Is the tree balanced?", tree.isBalanced());
+
+// Print tree traversals
+console.log("Level Order Traversal:");
+tree.levelOrder(node => console.log(node.data));
+
+console.log("Pre-order Traversal:");
+tree.preOrder(node => console.log(node.data));
+
+console.log("Post-order Traversal:");
+tree.postOrder(node => console.log(node.data));
+
+console.log("In-order Traversal:");
+tree.inOrder(node => console.log(node.data));
+
+// Unbalance the tree by adding numbers > 100
+tree.insert(101);
+tree.insert(120);
+tree.insert(150);
+
+console.log("Is the tree still balanced?", tree.isBalanced());
+
+prettyPrint(tree.root);
+
+// Rebalance the tree
+tree.rebalance();
+
+// Confirm the tree is balanced again
+console.log("Is the tree balanced after rebalancing?", tree.isBalanced());
+
+prettyPrint(tree.root);
+
+// Print tree traversals after rebalancing
+console.log("Level Order Traversal after rebalancing:");
+tree.levelOrder(node => console.log(node.data));
+
+console.log("Pre-order Traversal after rebalancing:");
+tree.preOrder(node => console.log(node.data));
+
+console.log("Post-order Traversal after rebalancing:");
+tree.postOrder(node => console.log(node.data));
+
+console.log("In-order Traversal after rebalancing:");
+tree.inOrder(node => console.log(node.data));
